@@ -14,7 +14,7 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class GPTConfig:
     """ base GPT config, params common to all GPT versions """
@@ -117,7 +117,7 @@ class GPT(nn.Module):
         self.block_size = config.block_size
         self.apply(self._init_weights)
 
-        logger.info("number of parameters: %e", sum(p.numel() for p in self.parameters()))
+        LOGGER.info("number of parameters: %e", sum(p.numel() for p in self.parameters()))
 
     def _init_weights(self, module):
         if isinstance(module, (nn.Linear, nn.Embedding)):
