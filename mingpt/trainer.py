@@ -5,6 +5,8 @@ so nothing in this file really has anything to do with GPT specifically.
 
 import math
 import logging
+import os
+from datetime import datetime
 
 from tqdm import tqdm
 import numpy as np
@@ -52,9 +54,12 @@ class Trainer:
 
     def save_checkpoint(self):
         if self.config.ckpt_path is not None:
+            if not os.path.exists(self.config.ckpt_path):
+                os.makedirs(self.config.ckpt_path)
             ckpt_model = self.model.module if hasattr(self.model, "module") else self.model
             LOGGER.info("saving %s", self.config.ckpt_path)
-            torch.save(ckpt_model.state_dict(), self.config.ckpt_path)
+            torch.save(ckpt_model.state_dict(),
+                       os.path.join(self.config.ckpt_path, datetime.now().strftime('%Y%m%d %H%M%S')))
 
     def train(self):
         model, config = self.model, self.config
